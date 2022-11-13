@@ -13,6 +13,7 @@ class CreateClientUseCase {
       where: {
         username: {
           mode: 'insensitive',
+          equals: username,
         },
       },
     });
@@ -30,7 +31,10 @@ class CreateClientUseCase {
       }
     });
 
-    return client;
+    return {
+      id: client.id,
+      username: client.username,
+    };
   }
 }
 
