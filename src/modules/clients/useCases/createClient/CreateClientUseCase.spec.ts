@@ -9,10 +9,7 @@ describe('src/modules/clients/useCases/createClient/CreateClientUseCase', () => 
 
         const createClientUseCase = new CreateClientUseCase();
 
-        await expect(async () => await createClientUseCase.execute({
-          username: 'test',
-          password: '123',
-        })).rejects.toThrow('Client already exists');
+        await expect(async () => await createClientUseCase.execute(expect.anything())).rejects.toThrow('Client already exists');
       });
     });
 
