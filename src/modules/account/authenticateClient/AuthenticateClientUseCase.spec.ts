@@ -9,19 +9,33 @@ describe('src/modules/account/authenticateClient/AuthenticateClientUseCase', () 
 
   describe('when try authenticate client', () => {
     describe('and client is not find', () => {
-      it('should throw an exception of "Username or password invalid!"', async () => {
+      beforeAll(() => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(null);
+      });
 
+      it('should throw an exception of "Username or password invalid!"', async () => {
         await expect(async () => await authenticateClientUseCase.execute(expect.anything())).rejects.toThrow('Username or password invalid!');
+      });
+
+      it('should throw an exception with cause 401', () => {
+        authenticateClientUseCase.execute(expect.anything())
+          .catch((err: Error) => expect(err.cause).toEqual(401));
       });
     });
 
     describe('and password is invalid', () => {
-      it('should throw an exception of "Username or password invalid!"', async () => {
+      beforeAll(() => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
         jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(false));
+      });
 
+      it('should throw an exception of "Username or password invalid!"', async () => {
         await expect(async () => await authenticateClientUseCase.execute(expect.anything())).rejects.toThrow('Username or password invalid!');
+      });
+
+      it('should throw an exception with cause 401', () => {
+        authenticateClientUseCase.execute(expect.anything())
+          .catch((err: Error) => expect(err.cause).toEqual(401));
       });
     });
 

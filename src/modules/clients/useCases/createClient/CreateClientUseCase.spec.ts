@@ -6,10 +6,17 @@ describe('src/modules/clients/useCases/createClient/CreateClientUseCase', () => 
 
   describe('when try register new client', () => {
     describe('and client already exists', () => {
-      it('should throw an exception of "Client already exists"', async () => {
+      beforeAll(() => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
+      });
 
+      it('should throw an exception of "Client already exists"', async () => {
         await expect(async () => await createClientUseCase.execute(expect.anything())).rejects.toThrow('Client already exists');
+      });
+
+      it('should throw an exception with cause 422', () => {
+        createClientUseCase.execute(expect.anything())
+          .catch((err: Error) => expect(err.cause).toEqual(422));
       });
     });
 
