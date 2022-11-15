@@ -29,14 +29,15 @@ describe('src/modules/account/authenticateClient/AuthenticateClientUseCase', () 
 
     describe('and can with successfully', () => {
       it('should return a token', async () => {
-        const expectedToken = 'fake token';
+        const fakeToken = 'fake token';
 
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
         jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(true));
-        jest.spyOn(jsonwebtoken, 'sign').mockImplementation(() => Promise.resolve(expectedToken));
+        jest.spyOn(jsonwebtoken, 'sign').mockImplementation(() => fakeToken);
 
         const authenticateClientUseCase = new AuthenticateClientUseCase();
         const result = await authenticateClientUseCase.execute(expect.anything());
+        const expectedToken = { token: 'fake token' };
 
         expect(result).toEqual(expectedToken);
       });

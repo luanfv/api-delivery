@@ -22,7 +22,7 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
 
   afterEach(() => {
     jest.clearAllMocks();
-  })
+  });
 
   describe('when pass all arguments in the request body', () => {
     beforeEach(() => {

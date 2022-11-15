@@ -17,13 +17,13 @@ class AuthenticateClientUseCase {
     });
 
     if (!client) {
-      throw new Error('Username or password invalid!');
+      throw new Error('Username or password invalid!', { cause: 401 });
     }
 
     const passwordMatch = await compare(password, client.password);
 
     if (!passwordMatch) {
-      throw new Error('Username or password invalid!');
+      throw new Error('Username or password invalid!', { cause: 401 });
     }
 
     const token = sign({ username }, '559cd6f7a6d074b19ca25bbee02da10e', {
@@ -31,7 +31,7 @@ class AuthenticateClientUseCase {
       expiresIn: '1d',
     });
 
-    return token;
+    return { token };
   }
 }
 
