@@ -5,12 +5,12 @@ import { AuthenticateClientUseCase } from './AuthenticateClientUseCase';
 import { prisma } from '../../../database/prismaClient';
 
 describe('src/modules/account/authenticateClient/AuthenticateClientUseCase', () => {
+  const authenticateClientUseCase = new AuthenticateClientUseCase();
+
   describe('when try authenticate client', () => {
     describe('and client is not find', () => {
       it('should throw an exception of "Username or password invalid!"', async () => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(null);
-
-        const authenticateClientUseCase = new AuthenticateClientUseCase();
 
         await expect(async () => await authenticateClientUseCase.execute(expect.anything())).rejects.toThrow('Username or password invalid!');
       });
@@ -20,8 +20,6 @@ describe('src/modules/account/authenticateClient/AuthenticateClientUseCase', () 
       it('should throw an exception of "Username or password invalid!"', async () => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
         jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(false));
-
-        const authenticateClientUseCase = new AuthenticateClientUseCase();
 
         await expect(async () => await authenticateClientUseCase.execute(expect.anything())).rejects.toThrow('Username or password invalid!');
       });
@@ -35,7 +33,6 @@ describe('src/modules/account/authenticateClient/AuthenticateClientUseCase', () 
         jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(true));
         jest.spyOn(jsonwebtoken, 'sign').mockImplementation(() => fakeToken);
 
-        const authenticateClientUseCase = new AuthenticateClientUseCase();
         const result = await authenticateClientUseCase.execute(expect.anything());
         const expectedToken = { token: 'fake token' };
 

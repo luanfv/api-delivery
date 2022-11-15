@@ -8,6 +8,7 @@ const app = express();
 describe('src/modules/clients/useCases/createClient/CreateClientController', () => {
   const request = app.request;
   const response = app.response;
+  const createClientController = new CreateClientController();
 
   beforeEach(() => {
     response.req = request;
@@ -36,8 +37,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
       it('should throw an exception of "Client already exists"', async () => {
         jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
 
-        const createClientController = new CreateClientController();
-
         await expect(async () => await createClientController.handle(request, response)).rejects.toThrow('Client already exists');
       });
     });
@@ -53,7 +52,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
       });
 
       it('should return the new client', async () => {
-        const createClientController = new CreateClientController();
         const result = await createClientController.handle(request, response);
 
         const expectedResult = {
@@ -65,7 +63,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
       });
 
       it('should return status code 201', async () => {
-        const createClientController = new CreateClientController();
         const result = await createClientController.handle(request, response);
 
         const expectedResult = 201;
@@ -83,8 +80,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
     });
 
     it('should throw an exception', async () => {
-      const createClientController = new CreateClientController();
-
       await expect(async () => await createClientController.handle(request, response)).rejects.toThrow();
     });
   });
