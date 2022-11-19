@@ -11,7 +11,9 @@ export async function ensureAuthenticateDeliveryman(request: Request, _response:
   const [_, token] = authHeader.split(' ');
 
   try {
-    verify(token, '4191c3c093349c74ff5d1312f34ba8ce');
+    const { sub } = verify(token, '4191c3c093349c74ff5d1312f34ba8ce');
+
+    request.body.id_deliveryman = sub;
 
     return next();
   } catch (err) {
