@@ -1,28 +1,30 @@
 import { prisma } from "../../../../database/prismaClient";
 
-interface IUpdateDeliveryman {
+interface IUpdateEndDate {
   id_delivery: string;
   id_deliveryman: string;
 }
 
-class UpdateDeliverymanUseCase {
-  async execute({ id_delivery, id_deliveryman }: IUpdateDeliveryman) {
+class UpdateEndDateUseCase {
+  async execute({ id_delivery, id_deliveryman }: IUpdateEndDate) {
     const result = await prisma.deliveries.updateMany({
       where: {
         id: id_delivery,
+        id_deliveryman,
       },
       data: {
-        id_deliveryman,
+        end_at: new Date(),
       },
     });
 
     if (result.count === 0) {
-      throw new Error('this delivery could not be started');
+      throw new Error('This delivery could not be completed');
     }
 
     const delivery = await prisma.deliveries.findFirst({
       where: {
         id: id_delivery,
+        id_deliveryman,
       },
     });
 
@@ -34,4 +36,4 @@ class UpdateDeliverymanUseCase {
   }
 }
 
-export { UpdateDeliverymanUseCase };
+export { UpdateEndDateUseCase };
