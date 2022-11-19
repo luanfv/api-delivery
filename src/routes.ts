@@ -19,22 +19,21 @@ const routes = Router();
 const createClientController = new CreateClientController();
 const authenticateClientController = new AuthenticateClientController();
 const findAllDeliveriesClientController = new FindAllDeliveriesClientController();
+const createDeliveryController = new CreateDeliveryController();
 routes.post('/client/', createClientController.handle);
 routes.post('/client/authenticate/', authenticateClientController.handle);
 routes.get('/client/deliveries/', ensureAuthenticateClient, findAllDeliveriesClientController.handle);
+routes.post('/delivery/', ensureAuthenticateClient, createDeliveryController.handle);
 
 const createDeliverymanController = new CreateDeliverymanController();
 const authenticateDeliverymanController = new AuthenticateDeliverymanController();
 const findAllDeliveriesDeliverymanController = new FindAllDeliveriesDeliverymanController();
-routes.post('/deliveryman/', createDeliverymanController.handle);
-routes.post('/deliveryman/authenticate/', authenticateDeliverymanController.handle);
-routes.get('/deliveryman/deliveries/', ensureAuthenticateDeliveryman, findAllDeliveriesDeliverymanController.handle);
-
-const createDeliveryController = new CreateDeliveryController();
 const findAllAvailableController = new FindAllAvailableController();
 const updateDeliverymanController = new UpdateDeliverymanController();
 const updateEndDateController = new UpdateEndDateController();
-routes.post('/delivery/', ensureAuthenticateClient, createDeliveryController.handle);
+routes.post('/deliveryman/', createDeliverymanController.handle);
+routes.post('/deliveryman/authenticate/', authenticateDeliverymanController.handle);
+routes.get('/deliveryman/deliveries/', ensureAuthenticateDeliveryman, findAllDeliveriesDeliverymanController.handle);
 routes.get('/delivery/available/', ensureAuthenticateDeliveryman, findAllAvailableController.handle);
 routes.patch('/delivery/start/:id/', ensureAuthenticateDeliveryman, updateDeliverymanController.handle);
 routes.patch('/delivery/end/:id/', ensureAuthenticateDeliveryman, updateEndDateController.handle);
