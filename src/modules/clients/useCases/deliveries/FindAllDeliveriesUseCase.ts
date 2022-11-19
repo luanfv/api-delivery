@@ -6,8 +6,10 @@ class FindAllDeliveriesUseCase {
       where: {
         id: id_client,
       },
-      include: {
-        Deliveries: true,
+      select: {
+        username: true,
+        id: true,
+        deliveries: true,
       },
     });
 
@@ -15,11 +17,7 @@ class FindAllDeliveriesUseCase {
       throw new Error('Client not found', { cause: 404 });
     }
 
-    return {
-      id: client.id,
-      username: client.username,
-      deliveries: client.Deliveries,
-    };
+    return client;
   }
 }
 
