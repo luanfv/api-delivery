@@ -1,6 +1,6 @@
 import { prisma } from '../../../../database/prismaClient';
 
-class FindAllDeliveriesUseCase {
+class FindAllDeliveriesClientUseCase {
   async execute(id_client: string) {
     const client = await prisma.clients.findFirst({
       where: {
@@ -21,4 +21,4 @@ class FindAllDeliveriesUseCase {
   }
 }
 
-export { FindAllDeliveriesUseCase };
+export { FindAllDeliveriesClientUseCase };
