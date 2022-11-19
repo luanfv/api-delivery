@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
-export async function ensureAuthenticateClient(request: Request, _response: Response, next: NextFunction) {
+export async function ensureAuthenticateDeliveryman(request: Request, _response: Response, next: NextFunction) {
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -11,9 +11,7 @@ export async function ensureAuthenticateClient(request: Request, _response: Resp
   const [_, token] = authHeader.split(' ');
 
   try {
-    const { sub } = verify(token, '559cd6f7a6d074b19ca25bbee02da10e');
-
-    request.body.id_client = sub;
+    verify(token, '4191c3c093349c74ff5d1312f34ba8ce');
 
     return next();
   } catch (err) {
