@@ -6,13 +6,13 @@ import { ensureAuthenticateDeliveryman } from './middlewares/ensureAuthenticateD
 import { AuthenticateClientController } from './modules/account/authenticateClient/AuthenticateClientController';
 import { AuthenticateDeliverymanController } from './modules/account/authenticateDeliveryman/AuthenticateDeliverymanController';
 import { CreateClientController } from './modules/clients/useCases/createClient/CreateClientController';
-import { CreateDeliveryController } from './modules/deliveries/useCases/createDelivery/CreateDeliveryController';
 import { CreateDeliverymanController } from './modules/deliveryman/useCases/createDeliveryman/CreateDeliverymanController';
-import { FindAllAvailableController } from './modules/deliveries/useCases/findAllAvailable/FindAllAvailableController';
-import { UpdateDeliverymanController } from './modules/deliveries/useCases/updateDeliveryman/UpdateDeliverymanController';
 import { FindAllDeliveriesClientController } from './modules/clients/useCases/findAllDeliveriesClient/FindAllDeliveriesClientController';
 import { FindAllDeliveriesDeliverymanController} from './modules/deliveryman/useCases/findAllDeliveriesDeliveryman/FindAllDeliveriesDeliverymanController';
-import { UpdateEndDateController } from './modules/deliveries/useCases/updateEndDate/UpdateEndDateController';
+import { CreateDeliveryController } from './modules/clients/useCases/createDelivery/CreateDeliveryController';
+import { FindAllDeliveriesAvailableController } from './modules/deliveryman/useCases/findAllDeliveriesAvailable/FindAllDeliveriesAvailableController';
+import { StartDeliveryController } from './modules/deliveryman/useCases/startDelivery/UpdateDeliverymanController';
+import { EndDeliveryController } from './modules/deliveryman/useCases/endDelivery/EndDeliveryController';
 
 const routes = Router();
 
@@ -28,14 +28,14 @@ routes.post('/delivery/', ensureAuthenticateClient, createDeliveryController.han
 const createDeliverymanController = new CreateDeliverymanController();
 const authenticateDeliverymanController = new AuthenticateDeliverymanController();
 const findAllDeliveriesDeliverymanController = new FindAllDeliveriesDeliverymanController();
-const findAllAvailableController = new FindAllAvailableController();
-const updateDeliverymanController = new UpdateDeliverymanController();
-const updateEndDateController = new UpdateEndDateController();
+const findAllDeliveriesAvailableController = new FindAllDeliveriesAvailableController();
+const startDeliveryController = new StartDeliveryController();
+const endDeliveryController = new EndDeliveryController();
 routes.post('/deliveryman/', createDeliverymanController.handle);
 routes.post('/deliveryman/authenticate/', authenticateDeliverymanController.handle);
 routes.get('/deliveryman/deliveries/', ensureAuthenticateDeliveryman, findAllDeliveriesDeliverymanController.handle);
-routes.get('/delivery/available/', ensureAuthenticateDeliveryman, findAllAvailableController.handle);
-routes.patch('/delivery/start/:id/', ensureAuthenticateDeliveryman, updateDeliverymanController.handle);
-routes.patch('/delivery/end/:id/', ensureAuthenticateDeliveryman, updateEndDateController.handle);
+routes.get('/delivery/available/', ensureAuthenticateDeliveryman, findAllDeliveriesAvailableController.handle);
+routes.patch('/delivery/start/:id/', ensureAuthenticateDeliveryman, startDeliveryController.handle);
+routes.patch('/delivery/end/:id/', ensureAuthenticateDeliveryman, endDeliveryController.handle);
 
 export { routes };
