@@ -24,7 +24,7 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryUseCase', ()
             item_name: expect.any(String),
           }).catch((err: Error) => err.cause);
 
-          expect(result).toEqual(expectedResult)
+        expect(result).toEqual(expectedResult);
       });
     });
 
