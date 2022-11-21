@@ -27,7 +27,7 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
 
   describe('when cannot register new delivery because missed item_name', () => {
 
-    it('should expect error', async () => {
+    it('should throw an exception of "Unidentified "item_name""', async () => {
       request.body = {
         id_client: expect.anything(),
       };
@@ -44,14 +44,14 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
       };
     });
 
-    it('should expect error', async () => {
+    it('should throw an exception of "Unidentified client', async () => {
       const expectedResult = 'Unidentified client';
 
       await expect(async () => await createDeliveryController.handle(request, response))
         .rejects.toThrow(expectedResult);
     });
 
-    it('should cause', async () => {
+    it('should throw an exception with cause 401', async () => {
       const expectedResult = 401;
       const result = await createDeliveryController.handle(request, response)
         .catch((err: Error) => err.cause);
