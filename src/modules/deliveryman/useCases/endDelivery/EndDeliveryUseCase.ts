@@ -18,7 +18,7 @@ class EndDeliveryUseCase {
     });
 
     if (result.count === 0) {
-      throw new Error('This delivery could not be completed');
+      throw new Error('Delivery is not found', { cause : 404 });
     }
 
     const delivery = await prisma.deliveries.findFirst({
@@ -27,10 +27,6 @@ class EndDeliveryUseCase {
         id_deliveryman,
       },
     });
-
-    if (!delivery) {
-      throw new Error('This delivery could not be completed');
-    }
 
     return delivery;
   }
