@@ -2,7 +2,7 @@ import { prisma } from '../../../../database/prismaClient';
 import { FindAllDeliveriesDeliverymanUseCase } from './FindAllDeliveriesDeliverymanUseCase';
 
 describe('src/modules/deliveryman/useCases/findAllDeliveriesDeliveryman/FindAllDeliveriesDeliverymanUseCase', () => {
-  const findAllDeliveriesDeliverymanUseCase = new FindAllDeliveriesDeliverymanUseCase()
+  const findAllDeliveriesDeliverymanUseCase = new FindAllDeliveriesDeliverymanUseCase();
 
   describe('when get try all delivery of a deliveryman', () => {
     describe('and not found deliveryman', () => {
