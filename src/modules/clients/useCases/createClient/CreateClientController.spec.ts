@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { CreateClientController } from './CreateClientController';
-import { prisma } from '../../../../database/prismaClient';
+import { CreateClientUseCase } from './CreateClientUseCase';
 
 const app = express();
 
@@ -12,7 +12,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
 
   beforeEach(() => {
     response.req = request;
-    request.method = 'POST';
 
     jest.spyOn(response, 'json').mockImplementation((body) => {
       response.req.body = body;
@@ -25,37 +24,68 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
     jest.clearAllMocks();
   });
 
-  describe('when pass all arguments in the request body', () => {
-    beforeEach(() => {
-      request.body = {
-        username: 'test',
-        password: '123',
-      };
-    });
-
-    describe('and client already exists', () => {
-      beforeAll(() => {
-        jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(expect.anything());
-      });
-
-      it('should throw an exception of "Client already exists"', async () => {
-        await expect(async () => await createClientController.handle(request, response)).rejects.toThrow('Client already exists');
-      });
-
-      it('should throw an exception with cause 422', () => {
-        createClientController.handle(request, response)
-          .catch((err: Error) => expect(err.cause).toEqual(422));
-      });
-    });
-
-    describe('and can register', () => {
-      beforeAll(() => {
-        jest.spyOn(prisma.clients, 'findFirst').mockResolvedValue(null);
-        jest.spyOn(prisma.clients, 'create').mockResolvedValue({
-          id: '123',
+  describe('when try register new client', () => {
+    describe('and not receive password', () => {
+      beforeEach(() => {
+        request.body = {
           username: 'test',
-          password: expect.any(String),
-        });
+        };
+      });
+
+      it('should throw an exception with message "Didn\'t receive password"', async () => {
+        await expect(
+          async () => await createClientController
+            .handle(request, response)
+          ).rejects
+          .toThrow('Didn\'t receive password');
+      });
+
+      it('should throw an exception with cause 422', async () => {
+        const expectedResult = 422;
+        const result = await createClientController
+          .handle(request, response)
+          .catch((err: Error) => err.cause);
+
+        expect(result).toEqual(expectedResult);
+      });
+    });
+
+    describe('and not receive username', () => {
+      beforeEach(() => {
+        request.body = {
+          password: 'test',
+        };
+      });
+
+      it('should throw an exception with message "Didn\'t receive username"', async () => {
+        await expect(
+          async () => await createClientController
+            .handle(request, response)
+          ).rejects
+          .toThrow('Didn\'t receive username');
+      });
+
+      it('should throw an exception with cause 422', async () => {
+        const expectedResult = 422;
+        const result = await createClientController
+          .handle(request, response)
+          .catch((err: Error) => err.cause);
+
+        expect(result).toEqual(expectedResult);
+      });
+    });
+
+    describe('and manages to register', () => {
+      beforeEach(() => {
+        jest.spyOn(CreateClientUseCase.prototype, 'execute').mockImplementation((item) => Promise.resolve({
+          id: '123',
+          username: item.username,
+        }));
+
+        request.body = {
+          username: 'test',
+          password: '123',
+        };
       });
 
       it('should return the new client', async () => {
@@ -76,18 +106,6 @@ describe('src/modules/clients/useCases/createClient/CreateClientController', () 
 
         expect(result.statusCode).toEqual(expectedResult);
       });
-    });
-  });
-
-  describe('when not passing all arguments in the request body', () => {
-    beforeEach(() => {
-      request.body = {
-        username: 'test',
-      };
-    });
-
-    it('should throw an exception', async () => {
-      await expect(async () => await createClientController.handle(request, response)).rejects.toThrow();
     });
   });
 });

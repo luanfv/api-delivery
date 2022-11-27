@@ -1,14 +1,10 @@
 import { hash } from 'bcrypt';
 
+import { ICreateClientExecuteRequest, ICreateClientExecuteResponse } from './CreateClientUseCase.d';
 import { prisma } from '../../../../database/prismaClient';
 
-interface ICreateClient {
-  username: string;
-  password: string;
-}
-
 class CreateClientUseCase {
-  async execute({ username, password }: ICreateClient) {
+  async execute({ username, password }: ICreateClientExecuteRequest): Promise<ICreateClientExecuteResponse> {
     const clientExists = await prisma.clients.findFirst({
       where: {
         username: {
