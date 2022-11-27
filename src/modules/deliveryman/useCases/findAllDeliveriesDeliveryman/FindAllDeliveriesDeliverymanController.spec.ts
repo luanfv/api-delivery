@@ -31,10 +31,10 @@ describe('src/modules/deliveryman/useCases/findAllDeliveriesDeliveryman/FindAllD
         request.body = {};
       });
 
-      it('should throw an exception with message "Unidentified deliveryman"', async () => {
+      it('should throw an exception with message "Didn\'t receive the deliveryman\'s identify"', async () => {
         await expect(async () => await findAllDeliveriesDeliverymanController.handle(request, response))
           .rejects
-          .toThrow('Unidentified deliveryman');
+          .toThrow('Didn\'t receive the deliveryman\'s identify');
       });
 
       it('should throw an exception with cause 401', async () => {

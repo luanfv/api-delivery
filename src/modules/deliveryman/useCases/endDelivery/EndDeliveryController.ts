@@ -8,7 +8,7 @@ class EndDeliveryController {
     const { id } = request.params;
 
     if (!id_deliveryman) {
-      throw new Error('Unidentified deliveryman', { cause: 401 });
+      throw new Error('Didn\'t receive the deliveryman\'s identify', { cause: 401 });
     }
 
     if (!id) {

@@ -30,9 +30,9 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
       request.body = {};
     });
 
-    it('should throw an exception of "Unidentified client"', async () => {
+    it('should throw an exception of "Didn\'t receive the client\'s identify"', async () => {
       await expect(async () => await findAllDeliveriesClientController.handle(request, response))
-        .rejects.toThrow('Unidentified client');
+        .rejects.toThrow('Didn\'t receive the client\'s identify');
     });
 
     it('should throw an exception with cause 401', async () => {

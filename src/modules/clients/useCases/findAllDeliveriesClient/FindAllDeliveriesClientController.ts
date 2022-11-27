@@ -6,7 +6,7 @@ class FindAllDeliveriesClientController {
     const { id_client } = request.body;
 
     if (!id_client) {
-      throw new Error('Unidentified client', { cause: 401 });
+      throw new Error('Didn\'t receive the client\'s identify', { cause: 401 });
     }
 
     const findAllDeliveriesClientUseCase = new FindAllDeliveriesClientUseCase();

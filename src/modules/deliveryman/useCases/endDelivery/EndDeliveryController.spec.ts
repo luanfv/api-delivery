@@ -17,11 +17,11 @@ describe('src/modules/deliveryman/useCases/startDelivery/EndDeliveryController',
         request.params = { id: expect.any(String) };
       });
 
-      it('should throw an exception with message "Unidentified deliveryman"', async () => {
+      it('should throw an exception with message "Didn\'t receive the deliveryman\'s identify"', async () => {
         await expect(
           async () => await endDeliveryController
             .handle(request, response),
-          ).rejects.toThrow('Unidentified deliveryman');
+          ).rejects.toThrow('Didn\'t receive the deliveryman\'s identify');
       });
 
       it('should throw an exception with cause 401', async () => {
