@@ -5,7 +5,7 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryUseCase', ()
   const createDeliveryUseCase = new CreateDeliveryUseCase();
 
   describe('when try register new delivery', () => {
-    describe('and "id_client" is invalid', () => {
+    describe('and not found client', () => {
       jest.spyOn(prisma.deliveries, 'create').mockRejectedValue(expect.anything());
 
       it('should throw an exception of "Not found client"', async () => {
@@ -28,36 +28,16 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryUseCase', ()
       });
     });
 
-    describe('and can register', () => {
-      it('should return new delivery', async () => {
-        jest.spyOn(prisma.deliveries, 'create').mockImplementation((item: any) => {
-          return {
-            ...item.data,
-            id: expect.any(String),
-            client: expect.anything(),
-            id_deliveryman: null,
-            deliveryman: null,
-            created_at: expect.any(Date),
-            end_at: null,
-          };
-        });
+    describe('and manages to register', () => {
+      it('should return the value', async () => {
+        jest.spyOn(prisma.deliveries, 'create').mockResolvedValue(expect.anything());
 
         const result = await createDeliveryUseCase.execute({
-          id_client: '123',
-          item_name: 'test',
+          id_client: expect.any(String),
+          item_name: expect.any(String),
         });
-        const expectedResult = {
-          id_client: '123',
-          item_name: 'test',
-          id: expect.any(String),
-          client: expect.anything(),
-          id_deliveryman: null,
-          deliveryman: null,
-          created_at: expect.any(Date),
-          end_at: null,
-        };
 
-        expect(result).toEqual(expectedResult);
+        expect(result).toBeTruthy();
       });
     });
   });

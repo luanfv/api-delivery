@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { CreateDeliveryController } from './CreateDeliveryController';
-import { prisma } from '../../../../database/prismaClient';
+import { CreateDeliveryUseCase } from './CreateDeliveryUseCase';
 
 const app = express();
 
@@ -12,7 +12,6 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
 
   beforeEach(() => {
     response.req = request;
-    request.method = 'POST';
 
     jest.spyOn(response, 'json').mockImplementation((body) => {
       response.req.body = body;
@@ -27,13 +26,13 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
 
   describe('when cannot register new delivery because missed item_name', () => {
 
-    it('should throw an exception of "Unidentified "item_name""', async () => {
+    it('should throw an exception of "Didn\'t receive item_name"', async () => {
       request.body = {
         id_client: expect.anything(),
       };
 
       await expect(async () => await createDeliveryController.handle(request, response))
-        .rejects.toThrow('Unidentified "item_name"');
+        .rejects.toThrow('Didn\'t receive item_name');
     });
   });
 
@@ -44,8 +43,8 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
       };
     });
 
-    it('should throw an exception of "Unidentified client', async () => {
-      const expectedResult = 'Unidentified client';
+    it('should throw an exception of "Didn\'t receive the client\'s identity"', async () => {
+      const expectedResult = 'Didn\'t receive the client\'s identity';
 
       await expect(async () => await createDeliveryController.handle(request, response))
         .rejects.toThrow(expectedResult);
@@ -62,22 +61,12 @@ describe('src/modules/clients/useCases/createDelivery/CreateDeliveryController',
 
   describe('when can register new delivery', () => {
     beforeEach(() => {
+      jest.spyOn(CreateDeliveryUseCase.prototype, 'execute').mockResolvedValue(expect.anything());
+
       request.body = {
         id_client: '123',
         item_name: 'test',
       };
-
-      jest.spyOn(prisma.deliveries, 'create').mockImplementation((item: any) => {
-        return {
-          ...item.data,
-          id: expect.any(String),
-          client: expect.anything(),
-          id_deliveryman: null,
-          deliveryman: null,
-          created_at: expect.any(Date),
-          end_at: null,
-        };
-      });
     });
 
     it('should return new delivery', async () => {
