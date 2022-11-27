@@ -3,14 +3,14 @@ import { FindAllDeliveriesDeliverymanUseCase } from './FindAllDeliveriesDelivery
 
 class FindAllDeliveriesDeliverymanController {
   async handle(request: Request, response: Response) {
-    const { id_client } = request.body;
+    const { id_deliveryman } = request.body;
 
-    if (!id_client) {
+    if (!id_deliveryman) {
       throw new Error('Unidentified deliveryman', { cause: 401 });
     }
 
     const findAllDeliveriesDeliverymanUseCase = new FindAllDeliveriesDeliverymanUseCase();
-    const deliveries = await findAllDeliveriesDeliverymanUseCase.execute(id_client);
+    const deliveries = await findAllDeliveriesDeliverymanUseCase.execute(id_deliveryman);
 
     return response.json(deliveries);
   }

@@ -11,7 +11,7 @@ import { FindAllDeliveriesClientController } from './modules/clients/useCases/fi
 import { FindAllDeliveriesDeliverymanController} from './modules/deliveryman/useCases/findAllDeliveriesDeliveryman/FindAllDeliveriesDeliverymanController';
 import { CreateDeliveryController } from './modules/clients/useCases/createDelivery/CreateDeliveryController';
 import { FindAllDeliveriesAvailableController } from './modules/deliveryman/useCases/findAllDeliveriesAvailable/FindAllDeliveriesAvailableController';
-import { StartDeliveryController } from './modules/deliveryman/useCases/startDelivery/UpdateDeliverymanController';
+import { StartDeliveryController } from './modules/deliveryman/useCases/startDelivery/StartDeliveryController';
 import { EndDeliveryController } from './modules/deliveryman/useCases/endDelivery/EndDeliveryController';
 
 const routes = Router();

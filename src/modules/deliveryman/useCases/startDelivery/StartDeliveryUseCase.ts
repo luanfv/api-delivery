@@ -17,7 +17,7 @@ class StartDeliveryUseCase {
     });
 
     if (result.count === 0) {
-      throw new Error('this delivery could not be started');
+      throw new Error('Delivery is not found', { cause: 404 });
     }
 
     const delivery = await prisma.deliveries.findFirst({
@@ -25,10 +25,6 @@ class StartDeliveryUseCase {
         id: id_delivery,
       },
     });
-
-    if (!delivery) {
-      throw new Error('This delivery could not be completed');
-    }
 
     return delivery;
   }

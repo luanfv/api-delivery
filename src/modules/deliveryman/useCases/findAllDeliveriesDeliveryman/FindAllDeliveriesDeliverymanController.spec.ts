@@ -52,7 +52,7 @@ describe('src/modules/deliveryman/useCases/findAllDeliveriesDeliveryman/FindAllD
       jest.spyOn(prisma.deliveryman, 'findFirst').mockResolvedValue(expect.anything());
 
       request.body = {
-        id_client: '123',
+        id_deliveryman: '123',
       };
 
       await expect(
